@@ -1,0 +1,1 @@
+import {Platform} from 'react-native'; export default {card:Platform.select({ios:{shadowColor:'#000',shadowOpacity:0.08,shadowRadius:8,shadowOffset:{width:0,height:3}},android:{elevation:3}}),floating:Platform.select({ios:{shadowColor:'#2563EB',shadowOpacity:0.25,shadowRadius:10,shadowOffset:{width:0,height:5}},android:{elevation:6}})};

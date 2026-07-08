@@ -1,0 +1,1 @@
+export default {buttonHeight:52,inputHeight:52,headerHeight:56,bottomTabHeight:64,iconSm:18,iconMd:24,iconLg:32,avatarSm:40,avatarMd:56,avatarLg:72};
