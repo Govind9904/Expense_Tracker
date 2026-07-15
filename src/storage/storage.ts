@@ -1,21 +1,46 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const TOKEN_KEY  = 'AUTH_TOKEN';
+const STORAGE_KEYS = {
+  TOKEN: 'AUTH_TOKEN',
+  USER: 'AUTH_USER',
+};
 
 export const Storage = {
-    async setToken(token : string){
-        await AsyncStorage.setItem(TOKEN_KEY, token);
-    },
+  async setToken(token: string): Promise<void> {
+    await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, token);
+  },
 
-    async getToken(){
-        await AsyncStorage.getItem(TOKEN_KEY)
-    },
+  async getToken(): Promise<string | null> {
+    return await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+  },
 
-    async removeeToken(){
-        await AsyncStorage.removeItem(TOKEN_KEY);
-    },
+  async removeToken(): Promise<void> {
+    await AsyncStorage.removeItem(STORAGE_KEYS.TOKEN);
+  },
 
-    async clearAll(){
-        await AsyncStorage.clear();
-    }
-}
+  async setUser(user: object): Promise<void> {
+    await AsyncStorage.setItem(
+      STORAGE_KEYS.USER,
+      JSON.stringify(user),
+    );
+  },
+
+  async getUser<T>(): Promise<T | null> {
+    const user = await AsyncStorage.getItem(STORAGE_KEYS.USER);
+
+    if (!user) return null;
+
+    return JSON.parse(user);
+  },
+
+  async removeUser(): Promise<void> {
+    await AsyncStorage.removeItem(STORAGE_KEYS.USER);
+  },
+
+  async clearAll(): Promise<void> {
+    await AsyncStorage.removeMany([
+      STORAGE_KEYS.TOKEN,
+      STORAGE_KEYS.USER,
+    ]);
+  },
+};
