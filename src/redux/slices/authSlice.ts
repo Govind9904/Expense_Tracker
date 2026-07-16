@@ -35,14 +35,22 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{
         token: string;
-        user: User;
       }>
     ) => {
       state.token = action.payload.token;
-      state.user = action.payload.user;
       state.isAuthenticated = true;
       state.loading = false;
       state.error = null;
+    },
+
+    restoreSession: (
+      state,
+      action: PayloadAction<{
+        token: string;
+      }>
+    ) => {
+      state.token = action.payload.token;
+      state.isAuthenticated = true;
     },
 
     logout: state => {
@@ -71,6 +79,7 @@ const authSlice = createSlice({
 export const {
   setLoading,
   loginSuccess,
+  restoreSession,
   logout,
   setUser,
   setError,
