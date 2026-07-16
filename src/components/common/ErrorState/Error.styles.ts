@@ -1,12 +1,19 @@
 import { StyleSheet } from 'react-native';
 
-import Colors from '../../../theme/colors';
+import Spacing from '../../../theme/spacing';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
+
     justifyContent: 'center',
+
     alignItems: 'center',
-    backgroundColor: Colors.background,
+
+    paddingHorizontal: Spacing.lg,
+  },
+
+  message: {
+    marginVertical: Spacing.md,
   },
 });
