@@ -29,6 +29,13 @@ const ProfileScreen = () => {
   return (
     <View>
       <Text>ProfileScreen</Text>
+      <TouchableOpacity
+  onPress={handleLogout}
+>
+  <Text>
+    Logout
+  </Text>
+</TouchableOpacity>
     </View>
   );
 };

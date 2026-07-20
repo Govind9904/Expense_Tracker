@@ -29,12 +29,12 @@ export const fetchDashboardData = createAsyncThunk(
 
       const expenses = expensesResponse.data;
       const monthly = monthlyResponse.data;
-      const graph = graphResopnse.data;
+      const graph = graphResopnse.data.graphData;
       const dashboard: DashboardData = {
         balance: 0,
         todayExpense: 0,
         monthlyExpense: 0,
-        recentExpenses: monthly.total ?? 0,
+        recentExpenses:expenses.slice(0, 5),
         graphData: graph,
       };
 

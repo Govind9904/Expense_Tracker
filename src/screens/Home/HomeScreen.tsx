@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import ScreenContainer from '../../components/common/ScreenContainer';
@@ -15,20 +15,33 @@ import { fetchDashboardData } from '../../redux/thunks/expenseThunk';
 import Loader from '../../components/common/Loader';
 import ErrorState from '../../components/common/ErrorState';
 
+import ExpenseChart from '../../components/charts/ExpenseChart';
+import DashboardSkeleton from '../../components/dashboard/DashboardSkeleton/DashboardSkeleton';
+
 const HomeScreen = () => {
   const user = useAppSelector(state => state.auth.user);
   const dispatch = useAppDispatch();
-
+  const [refreshing, setRefreshing] = useState(false);
   const { dashboard, loading, error } = useAppSelector(state => state.expense);
 
   useEffect(() => {
     dispatch(fetchDashboardData({}));
   }, [dispatch]);
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+
+    try {
+      await dispatch(fetchDashboardData({})).unwrap();
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   if (loading) {
     return (
       <ScreenContainer>
-        <Loader />
+        <DashboardSkeleton />
       </ScreenContainer>
     );
   }
@@ -45,7 +58,7 @@ const HomeScreen = () => {
   }
 
   return (
-    <ScreenContainer>
+    <ScreenContainer refreshing={refreshing} onRefresh={handleRefresh}>
       <View style={styles.container}>
         {/* Header */}
 
@@ -60,6 +73,8 @@ const HomeScreen = () => {
         {/* Balance */}
 
         <BalanceCard balance={dashboard.balance} />
+
+        <ExpenseChart data={dashboard.graphData} />
 
         {/* Summary */}
 
@@ -80,7 +95,7 @@ const HomeScreen = () => {
         {dashboard.recentExpenses.map(item => (
           <RecentExpenseCard
             key={item.id}
-            title={item.title}
+            title={item.description}
             amount={item.amount}
           />
         ))}
