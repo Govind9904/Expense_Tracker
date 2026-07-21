@@ -13,7 +13,7 @@ interface Props {
 const SplashLogo = ({ logoOpacity, logoScale, textOpacity }: Props) => {
   return (
     <>
-      <Animated.Image
+      {/* <Animated.Image
         source={require('../../../assets/images/logo.png')}
         resizeMode="contain"
         style={[
@@ -23,7 +23,7 @@ const SplashLogo = ({ logoOpacity, logoScale, textOpacity }: Props) => {
             transform: [{ scale: logoScale }],
           },
         ]}
-      />
+      /> */}
 
       <Animated.Text style={styles.title}>{APP.NAME}</Animated.Text>
 
