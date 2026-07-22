@@ -4,6 +4,7 @@ import {
   getMonthlyTotal,
   getYearlyTotal,
   getGraphData,
+  createExpense,
 } from '../../api/expenseApi';
 import {
   setDashboard,
@@ -11,7 +12,7 @@ import {
   setError,
   setLoading,
 } from '../slices/expenseSlice';
-import { DashboardData } from '../../types/expense';
+import { AddExpensePayload, DashboardData } from '../../types/expense';
 
 export const fetchDashboardData = createAsyncThunk(
   'expense/fetchDashboardData',
@@ -34,7 +35,7 @@ export const fetchDashboardData = createAsyncThunk(
         balance: 0,
         todayExpense: 0,
         monthlyExpense: 0,
-        recentExpenses:expenses.slice(0, 5),
+        recentExpenses: expenses.slice(0, 5),
         graphData: graph,
       };
 
@@ -56,3 +57,30 @@ export const fetchDashboardData = createAsyncThunk(
     }
   },
 );
+
+export const addExpense = createAsyncThunk('expense/addExpense',
+  async(payload : AddExpensePayload,{dispatch,rejectWithValue}) => {
+    try{
+      dispatch(setLoading(true));
+
+      const response = await createExpense(payload);
+
+      // Refresh Dashboard After successful Createtion
+      await dispatch(fetchDashboardData({}));
+
+      dispatch(setLoading(false));
+
+      return response.data;
+    }
+    catch(error : any){
+      dispatch(
+        setError(
+          error.response?.data?.message ?? 'Failed to add expense',
+        )
+      )
+      dispatch(setLoading(false));
+
+      return rejectWithValue(error.response?.data)
+    }
+  }
+)
